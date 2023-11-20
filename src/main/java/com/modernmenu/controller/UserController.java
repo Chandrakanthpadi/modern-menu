@@ -34,7 +34,7 @@ public class UserController {
 
 		newRestaurant.setRestaurantName(accountRequest.getRestaurantName());
 		newRestaurant.setContactNo(accountRequest.getContactNo());
-		newRestaurant.setAddress(accountRequest.getContactNo());
+		newRestaurant.setAddress(accountRequest.getAddress());
 
 		String restaurnatId = restaurantService.addRestaurant(newRestaurant).getRestaurantId();
 
