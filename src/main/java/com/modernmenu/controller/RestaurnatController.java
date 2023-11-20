@@ -31,7 +31,7 @@ public class RestaurnatController {
 	private final RestaurantService restaurantService;
 	
 	
-	@GetMapping(value = "/hello")
+	@GetMapping(value = "/health")
 	public String sayHell() {
 		System.out.println(RestaurnatController.url);
 		return RestaurnatController.url;
