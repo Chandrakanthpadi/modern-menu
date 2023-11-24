@@ -48,13 +48,19 @@ public class RestaurantServiceImpl implements RestaurantService {
 	}
 
 	@Override
-	public void updateRestaurant(Restaurant restaurant) {
-		// TODO Auto-generated method stub
+	public void updateRestaurant(String restaurantName) {
+		Restaurant restaurant = restaurantRepository.findByRestaurantName(restaurantName).get();
+		restaurant.setOpen(!restaurant.isOpen());
+		restaurantRepository.saveAndFlush(restaurant);
 	}
 
 	@Override
 	public Restaurant findByrestaurantId(String restaurantId) {
-		return restaurantRepository.findById(restaurantId).get();
+		
+		Restaurant restaurant =  restaurantRepository.findById(restaurantId).get();
+		System.out.println(restaurant.toString());
+		return restaurant;
+		
 	}
 
 	@Override

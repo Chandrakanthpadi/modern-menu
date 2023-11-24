@@ -9,7 +9,7 @@ public interface RestaurantService {
 
 	Restaurant addRestaurant(Restaurant restaurant);
 	void removeRestaurant(Restaurant restaurant);
-	void updateRestaurant(Restaurant restaurant);
+	void updateRestaurant(String restaurantId);
 	Optional<Restaurant> getRestaurant(String restaurantName);
 	Restaurant findByrestaurantId(String restaurantId);
 	List<String> getCategory(String restaurantId);

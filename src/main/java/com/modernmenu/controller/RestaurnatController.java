@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,26 +40,26 @@ public class RestaurnatController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<HttpStatus> addRestaurnat(@RequestBody Restaurant restaurant) {
-		
 		restaurantService.addRestaurant(restaurant);
-		return ResponseEntity.ok(HttpStatus.OK);
-			
+		return ResponseEntity.ok(HttpStatus.OK);		
 	}
 	
 	@GetMapping()
 	public Restaurant getRestaurant(@RequestParam String restaurantName) {
-		
 		return restaurantService.getRestaurant(restaurantName).get();
-		
 	}
 	
 	@GetMapping("/category")
 	public List<String> getCategory(@RequestParam String restaurantId){
-		
 		return restaurantService.getCategory(restaurantId);
-		
 	}
 	
+	
+	@PatchMapping("/notify")
+	public ResponseEntity<HttpStatus> updateStatus(@RequestParam String restaurantName) {
+		restaurantService.updateRestaurant(restaurantName);
+		return ResponseEntity.ok(HttpStatus.OK);
+	}
 	
 	
 }

@@ -27,5 +27,6 @@ public class Restaurant {
 	public String restaurantName;
 	public String address;
 	public String contactNo;
+	public boolean isOpen;
 	
 }

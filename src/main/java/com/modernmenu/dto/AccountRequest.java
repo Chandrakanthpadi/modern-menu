@@ -18,5 +18,6 @@ public class AccountRequest {
 	public String contactNo;
 	public String userName;
 	public String password;
+	public boolean isOpen;
 	
 }
