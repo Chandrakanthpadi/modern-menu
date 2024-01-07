@@ -15,7 +15,6 @@ public class DBConfigAndUtil {
 		Connection connection=DriverManager.getConnection(  
 				"jdbc:mysql://localhost:3306/dynamicmenu","root","Chandu@0502");  
 
-		
 		return connection;
 		
 	}

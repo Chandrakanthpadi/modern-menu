@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.modernmenu.entity.Category;
 
-public interface CategoryRepository extends JpaRepository<Category, String>{
+public interface CategoryRepository extends JpaRepository<Category, String> {
 
-	public Optional<Category> findByRestaurantIdAndCategoryName(String restaurnatId, String categoryName);
-	
-	public List<Category> findByRestaurantId(String restaurnatId);
+  public Optional<Category> findByRestaurantIdAndCategoryName(String restaurnatId,
+      String categoryName);
 
-	public Category findByCategoryName(String categoryName);
+  public List<Category> findByRestaurantId(String restaurnatId);
+
+  public Category findByCategoryName(String categoryName);
 }

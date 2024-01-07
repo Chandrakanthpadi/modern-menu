@@ -1,12 +1,18 @@
 package com.modernmenu.service;
 
-import com.modernmenu.dto.ItemRequestRecord;
+import com.modernmenu.dto.ItemsAddRequestRecord;
+import com.modernmenu.entity.Item;
 
 public interface ItemService {
 
-	void addItem(ItemRequestRecord itemDTO);
-	void updateStatus(String itemId);
-	void updateItem(String itemId, ItemRequestRecord itemRecord);
-	void removeItem(ItemRequestRecord itemRecord);
-	
+  Item getItemFromDatabaseById(String itemId);
+
+  void addItems(ItemsAddRequestRecord itemsAddRequestRecord);
+
+  void updateItemStatus(String itemId);
+
+  void removeItem(String itemId);
+
+  void updateItem(String itemId, ItemsAddRequestRecord itemRecord);
+
 }

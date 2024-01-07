@@ -4,16 +4,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.modernmenu.dto.ItemRequestRecord;
+import com.modernmenu.dto.ItemsAddRequestRecord;
+import com.modernmenu.entity.Item;
 import com.modernmenu.service.impl.ItemServiceImpl;
-
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -22,40 +22,48 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ItemController {
 
-	
-	private final ItemServiceImpl itemService;
+  private final ItemServiceImpl itemService;
 
-	@PostMapping("/add")
-	public ResponseEntity<HttpStatus> addItem(@RequestBody @Valid ItemRequestRecord itemRecord) {
+  @GetMapping("/get")
+  public ResponseEntity<Item> getItem(@RequestParam String itemId) {
 
-		itemService.addItem(itemRecord);
-		return ResponseEntity.ok(HttpStatus.OK);
+    Item item = itemService.getItemFromDatabaseById(itemId);
+    return ResponseEntity.status(HttpStatus.OK).body(item);
 
-	}
+  }
 
-	@PatchMapping("/update")
-	public ResponseEntity<HttpStatus> updateItem(@RequestParam String itemId,
-			@RequestBody ItemRequestRecord itemRecord) {
+  @PostMapping("/add")
+  public ResponseEntity<HttpStatus> addItems(
+      @RequestBody ItemsAddRequestRecord itemAddRequestRecord) {
 
-		itemService.updateItem(itemId, itemRecord);
-		return ResponseEntity.ok(HttpStatus.OK);
+    itemService.addItems(itemAddRequestRecord);
+    return ResponseEntity.ok(HttpStatus.CREATED);
 
-	}
+  }
 
-	@DeleteMapping("/remove")
-	public ResponseEntity<HttpStatus> removeItem(@RequestBody ItemRequestRecord itemRecord) {
+  @PatchMapping("/update")
+  public ResponseEntity<HttpStatus> updateItem(@RequestParam String itemId,
+      @RequestBody ItemsAddRequestRecord itemRecord) {
 
-		itemService.removeItem(itemRecord);
-		return ResponseEntity.ok(HttpStatus.OK);
+    itemService.updateItem(itemId, itemRecord);
+    return ResponseEntity.ok(HttpStatus.OK);
 
-	}
+  }
 
-	@PatchMapping("/notify")
-	public ResponseEntity<HttpStatus> updateStatus(@RequestParam String itemId) {
+  @DeleteMapping("/delete")
+  public ResponseEntity<HttpStatus> removeItem(@RequestParam String itemId) {
 
-		itemService.updateStatus(itemId);
-		return ResponseEntity.ok(HttpStatus.OK);
+    itemService.removeItem(itemId);
+    return ResponseEntity.ok(HttpStatus.NO_CONTENT);
 
-	}
+  }
+
+  @PatchMapping("/notify")
+  public ResponseEntity<HttpStatus> updateStatus(@RequestParam String itemId) {
+
+    itemService.updateItemStatus(itemId);
+    return ResponseEntity.ok(HttpStatus.OK);
+
+  }
 
 }

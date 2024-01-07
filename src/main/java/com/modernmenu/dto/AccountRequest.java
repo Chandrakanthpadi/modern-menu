@@ -1,5 +1,6 @@
 package com.modernmenu.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,16 @@ import lombok.ToString;
 @ToString
 public class AccountRequest {
 
-	public String restaurantName;
-	public String address;
-	public String contactNo;
-	public String userName;
-	public String password;
-	public boolean isOpen;
-	
+  @NotBlank(message = "Restaurant name cannot be blank.")
+  public String restaurantName;
+  @NotBlank(message = "Address cannot be blank.")
+  public String address;
+  @NotBlank(message = "Contact number cannot be blank.")
+  public String contactNo;
+  @NotBlank(message = "Username cannot be blank.")
+  public String userName;
+  @NotBlank(message = "Password cannot be blank")
+  public String password;
+  public boolean isOpen = true;
+
 }

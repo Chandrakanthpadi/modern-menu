@@ -8,31 +8,32 @@ import org.hibernate.id.IdentifierGenerator;
 
 public class ItemIdGenerator implements IdentifierGenerator {
 
-	static String prefix;
-	static int value;
+  static String prefix;
+  static int value;
 
-	static {
-		prefix = "I";
-	}
+  static {
+    prefix = "I";
+  }
 
-	public ItemIdGenerator() {
+  public ItemIdGenerator() {
 
-		value = DBConfigAndUtil.getTableCount("item");
-	
-	}
+    value = DBConfigAndUtil.getTableCount("item");
 
-	@Override
-	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+  }
 
-		try {
+  @Override
+  public Serializable generate(SharedSessionContractImplementor session, Object object)
+      throws HibernateException {
 
-			return ItemIdGenerator.prefix + String.format("%03d", ++value);
+    try {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+      return ItemIdGenerator.prefix + String.format("%03d", ++value);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
 
 }

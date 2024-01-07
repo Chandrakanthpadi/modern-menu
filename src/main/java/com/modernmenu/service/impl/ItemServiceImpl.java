@@ -1,18 +1,17 @@
 package com.modernmenu.service.impl;
 
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
-import com.modernmenu.dto.ItemRequestRecord;
+import com.modernmenu.dto.ItemDTO;
 import com.modernmenu.dto.ItemResponseDTO;
+import com.modernmenu.dto.ItemsAddRequestRecord;
 import com.modernmenu.entity.Category;
 import com.modernmenu.entity.Item;
-import com.modernmenu.exception.ResourceAlreadyExists;
+import com.modernmenu.exception.ResourceNotFound;
 import com.modernmenu.repository.CategoryRepository;
 import com.modernmenu.repository.ItemRepository;
 import com.modernmenu.service.ItemService;
-
+import com.modernmenu.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,90 +21,127 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-	
-	private final ItemRepository itemRepository;
-	private final CategoryRepository categoryRepository;
+  private final ItemRepository itemRepository;
+  private final CategoryRepository categoryRepository;
+  private final RestaurantService restaurantService;
 
-	public void addItem(@Valid ItemRequestRecord itemRecord) {
+  @Override
+  public Item getItemFromDatabaseById(String itemId) {
 
-		log.debug("addItem Request {}", itemRecord);
+    Optional<Item> itemFromDatabase = itemRepository.findById(itemId);
+    if (!itemFromDatabase.isPresent()) {
+      throw new ResourceNotFound("Item not found.");
+    }
+    return itemFromDatabase.get();
 
-		Optional<ItemResponseDTO> isItemExitsInDB = itemRepository.getItem(itemRecord.itemName(),
-				itemRecord.restaurantId());
+  }
 
-		if (isItemExitsInDB.isPresent()) {
-			throw new ResourceAlreadyExists();
-		}
-		
-		String categoryId = checkForCategoryAndGetCategoryId(itemRecord.restaurantId(), itemRecord.categoryName());
 
-		Item newItem = new Item();
+  @Override
+  public void addItems(ItemsAddRequestRecord itemsAddRequestRecord) {
 
-		newItem.setItemName(itemRecord.itemName());
-		newItem.setCategoryId(categoryId);
-		newItem.setPrice(itemRecord.price());
-		newItem.setStatus(false);
-		newItem.setType(itemRecord.type());
-		newItem.setStatus(true);
+    // To check if the restaurant is present if not throw restaurant not found exception.
+    restaurantService.getRestaurantFromDatabaseById(itemsAddRequestRecord.restaurantId());
 
-		itemRepository.saveAndFlush(newItem);
+    String categoryId = checkForCategoryAndGetCategoryId(itemsAddRequestRecord.restaurantId(),
+        itemsAddRequestRecord.categoryName());
 
-	}
-	
-	@Override
-	public void updateItem(String itemId, ItemRequestRecord itemRecord) {
+    log.info(itemsAddRequestRecord.toString());
 
-		log.debug("updateItem Request : {}", itemRecord);
+    for (ItemDTO item : itemsAddRequestRecord.items()) {
+      addItem(itemsAddRequestRecord.restaurantId(), categoryId, item);
+    }
 
-		Item item = itemRepository.findById(itemId).get();
+  }
 
-		item.setItemName(itemRecord.itemName());
-		item.setPrice(itemRecord.price());
-		item.setType(itemRecord.type());
+  public void addItem(String restaurantId, String categoryId, @Valid ItemDTO itemRecord) {
 
-		String categoryId = checkForCategoryAndGetCategoryId(itemRecord.restaurantId(), itemRecord.categoryName());
-		
-		item.setCategoryId(categoryId);
+    log.debug("addItem Request {}", itemRecord);
 
-		itemRepository.saveAndFlush(item);
+    Optional<ItemResponseDTO> isItemExitsInDB =
+        itemRepository.getItem(itemRecord.itemName(), restaurantId);
 
-	}
+    if (isItemExitsInDB.isPresent()) {
+      return;
+    }
 
-	@Override
-	public void removeItem(ItemRequestRecord itemRecord) {
-		
-		Optional<ItemResponseDTO> item = itemRepository.getItem(itemRecord.itemName(), itemRecord.restaurantId());
-		itemRepository.deleteById(item.get().getItemId());
+    Item newItem = new Item();
+    newItem.setItemName(itemRecord.itemName());
+    newItem.setCategoryId(categoryId);
+    newItem.setPrice(itemRecord.price());
+    newItem.setStatus(false);
+    newItem.setType(itemRecord.type());
+    newItem.setStatus(true);
 
-	}
+    itemRepository.saveAndFlush(newItem);
+    log.debug("Item has been added {}", newItem);
 
-	public void updateStatus(String itemId) {
+  }
 
-		Item item = itemRepository.findById(itemId).get();
-		item.setStatus(!item.isStatus());
+  @Override
+  public void updateItem(String itemId, ItemsAddRequestRecord itemsAddRequestRecord) {
 
-		itemRepository.saveAndFlush(item);
+    log.debug("updateItem Request : {}", itemsAddRequestRecord);
 
-	}
+    restaurantService.getRestaurantFromDatabaseById(itemsAddRequestRecord.restaurantId());
 
-	public String checkForCategoryAndGetCategoryId(String restaurantId, String categoryName) {
+    Item item = getItemFromDatabaseById(itemId);
+    ItemDTO requestItem = itemsAddRequestRecord.items().get(0);
 
-		Optional<Category> isCategoryExitsInDB = categoryRepository.findByRestaurantIdAndCategoryName(restaurantId,
-				categoryName);
+    item.setItemName(requestItem.itemName());
+    item.setPrice(requestItem.price());
+    item.setType(requestItem.type());
 
-		if (isCategoryExitsInDB.isPresent()) {
-			return isCategoryExitsInDB.get().getCategoryId();
-		}
-		
-		Category newCategory = new Category();
+    String categoryId = checkForCategoryAndGetCategoryId(itemsAddRequestRecord.restaurantId(),
+        itemsAddRequestRecord.categoryName());
+    item.setCategoryId(categoryId);
 
-		newCategory.setRestaurantId(restaurantId);
-		newCategory.setCategoryName(categoryName);
+    itemRepository.saveAndFlush(item);
 
-		newCategory = categoryRepository.saveAndFlush(newCategory);
+    log.debug("Item updated {}", item);
 
-		return newCategory.getCategoryId();
+  }
 
-	}
+  @Override
+  public void removeItem(String itemId) {
+
+    Item item = getItemFromDatabaseById(itemId);
+
+    itemRepository.deleteById(itemId);
+    log.debug("Item has been deleted {}", item);
+
+  }
+
+  @Override
+  public void updateItemStatus(String itemId) {
+
+    Item item = getItemFromDatabaseById(itemId);
+    item.setStatus(!item.isStatus());
+
+    itemRepository.saveAndFlush(item);
+    log.debug("Item status has been updated {}", item);
+
+  }
+
+  public String checkForCategoryAndGetCategoryId(String restaurantId, String categoryName) {
+
+    Optional<Category> isCategoryExitsInDB =
+        categoryRepository.findByRestaurantIdAndCategoryName(restaurantId, categoryName);
+
+    if (isCategoryExitsInDB.isPresent()) {
+      return isCategoryExitsInDB.get().getCategoryId();
+    }
+
+    Category newCategory = new Category();
+
+    newCategory.setRestaurantId(restaurantId);
+    newCategory.setCategoryName(categoryName);
+    newCategory = categoryRepository.saveAndFlush(newCategory);
+
+    log.debug("New Category has been added {}", newCategory);
+    return newCategory.getCategoryId();
+
+  }
+
 
 }

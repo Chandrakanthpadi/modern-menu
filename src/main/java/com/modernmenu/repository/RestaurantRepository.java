@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.modernmenu.entity.Restaurant;
 
-public interface RestaurantRepository extends JpaRepository<Restaurant, String>{
+public interface RestaurantRepository extends JpaRepository<Restaurant, String> {
 
-	public Optional<Restaurant> findByRestaurantName(String restaurantName);
-	
-//	@Query(value = "SELECT c.category_name FROM dynamicmenu.category c where c.restaurant_id = ?1;",nativeQuery = true)
-	@Query(value = "SELECT c.category_name FROM sql12623488.category c where c.restaurant_id = ?1;",nativeQuery = true)
-	public List<String> getCategory(String restaurant_id);
-	
+  public Optional<Restaurant> findByRestaurantName(String restaurantName);
+
+  @Query(value = "SELECT c.category_name FROM dynamicmenu.category c where c.restaurant_id = ?1;",
+      nativeQuery = true)
+  public List<String> getCategory(String restaurant_id);
+
 }

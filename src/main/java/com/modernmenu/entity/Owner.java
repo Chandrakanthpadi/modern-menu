@@ -16,14 +16,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class User {
+public class Owner {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int userId;
-	
-	public String userName;
-	public String password;
-	public String restaurantId;
-	
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public int userId;
+
+  public String userName;
+  public String password;
+  public String restaurantId;
+
 }

@@ -19,14 +19,15 @@ import lombok.ToString;
 @ToString
 public class Restaurant {
 
-	@Id
-	@GenericGenerator(name = "restaurant_id_generator", strategy = "com.modernmenu.util.RestaurantIdGenerator")
-	@GeneratedValue(generator = "restaurant_id_generator")
-	public String restaurantId;
-	
-	public String restaurantName;
-	public String address;
-	public String contactNo;
-	public boolean isOpen;
-	
+  @Id
+  @GenericGenerator(name = "restaurant_id_generator",
+      strategy = "com.modernmenu.util.RestaurantIdGenerator")
+  @GeneratedValue(generator = "restaurant_id_generator")
+  public String restaurantId;
+
+  public String restaurantName;
+  public String address;
+  public String contactNo;
+  public boolean isOpen;
+
 }

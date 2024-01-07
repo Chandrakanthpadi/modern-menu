@@ -19,16 +19,16 @@ import lombok.ToString;
 @ToString
 public class Item {
 
-	@Id
-	@GenericGenerator(name = "item_id_generator", strategy = "com.modernmenu.util.ItemIdGenerator")
-	@GeneratedValue(generator = "item_id_generator")
-	public String itemId;
-	
-	public String itemName;
-	public double price;
-	public boolean status;
-	public String type;
-	
-	public String categoryId;
-		
+  @Id
+  @GenericGenerator(name = "item_id_generator", strategy = "com.modernmenu.util.ItemIdGenerator")
+  @GeneratedValue(generator = "item_id_generator")
+  public String itemId;
+
+  public String itemName;
+  public double price;
+  public boolean status;
+  public String type;
+
+  public String categoryId;
+
 }

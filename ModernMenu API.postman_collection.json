@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "a20c49e7-b8de-4134-a8d6-08260eb7fdc6",
+		"name": "ModernMenu API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14523641"
+	},
+	"item": [
+		{
+			"name": "Item Controller",
+			"item": [
+				{
+					"name": "Add Item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurantId\": \"R025\",\n    \"categoryName\": \"Soup\",\n    \"items\": [\n        {\n            \"itemName\": \"csafgjg\",\n            \"type\": \"Veg\",\n            \"price\": 2919.0\n        },\n        {\n            \"itemName\": \"asfd\",\n            \"type\": \"Veg\",\n            \"price\": 29.0\n        }\n        \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{itembase}}/add",
+							"host": [
+								"{{itembase}}"
+							],
+							"path": [
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{itembase}}/get?itemId=I003",
+							"host": [
+								"{{itembase}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "itemId",
+									"value": "I003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{itembase}}/delete?itemId=I006",
+							"host": [
+								"{{itembase}}"
+							],
+							"path": [
+								"delete"
+							],
+							"query": [
+								{
+									"key": "itemId",
+									"value": "I006"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Item Avaliability",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{itembase}}/notify?itemId=I003",
+							"host": [
+								"{{itembase}}"
+							],
+							"path": [
+								"notify"
+							],
+							"query": [
+								{
+									"key": "itemId",
+									"value": "I003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurantId\": \"R002\",\n    \"categoryName\": \"Staters\",\n    \"items\": [\n        {\n            \"itemName\": \"Manchuria\",\n            \"type\": \"Veg\",\n            \"price\": 2919.0\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{itembase}}/update?itemId=I003",
+							"host": [
+								"{{itembase}}"
+							],
+							"path": [
+								"update"
+							],
+							"query": [
+								{
+									"key": "itemId",
+									"value": "I003"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserController",
+			"item": [
+				{
+					"name": "Registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurantName\":\"dfsdfsfsddas\",\n    \"address\":\"Visakhapatnam\",\n    \"contactNo\":\"9490075843\",\n    \"userName\":\"dsafasdfadqwewqqw\",\n    \"password\":\"mun\",\n    \"isOpen\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\":\"mun\",\n    \"password\":\"mun\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{userbase}}/login",
+							"host": [
+								"{{userbase}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RestaurnatController",
+			"item": [
+				{
+					"name": "Restaurant Menu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{restaurantBase}}/menu?restaurantId=R002",
+							"host": [
+								"{{restaurantBase}}"
+							],
+							"path": [
+								"menu"
+							],
+							"query": [
+								{
+									"key": "restaurantId",
+									"value": "R002"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\":\"p\",\n    \"password\":\"p\",\n    \"restaurantName\":\"Taj Mahal\",\n    \"address\":\"fadsf\",\n    \"contactNo\":\"3412\",\n    \"isOpen\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{restaurantBase}}/get?restaurantId=R002",
+							"host": [
+								"{{restaurantBase}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "restaurantId",
+									"value": "R002"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{restaurantBase}}/category?restaurantId=R022",
+							"host": [
+								"{{restaurantBase}}"
+							],
+							"path": [
+								"category"
+							],
+							"query": [
+								{
+									"key": "restaurantId",
+									"value": "R022"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Restaurant Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{restaurantBase}}/notify?restaurantId=R002",
+							"host": [
+								"{{restaurantBase}}"
+							],
+							"path": [
+								"notify"
+							],
+							"query": [
+								{
+									"key": "restaurantId",
+									"value": "R002"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
